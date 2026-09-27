@@ -10,6 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedPainelRouteImport } from './routes/_authenticated/painel'
 import { Route as ApiPublicCheckRouteImport } from './routes/api/public/check'
 import { Route as ApiPublicStatusRouteImport } from './routes/api/public/status'
 
@@ -17,6 +20,20 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedPainelRoute = AuthenticatedPainelRouteImport.update({
+  id: '/painel',
+  path: '/painel',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const ApiPublicCheckRoute = ApiPublicCheckRouteImport.update({
   id: '/api/public/check',
@@ -31,30 +48,47 @@ const ApiPublicStatusRoute = ApiPublicStatusRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/painel': typeof AuthenticatedPainelRoute
   '/api/public/check': typeof ApiPublicCheckRoute
   '/api/public/status': typeof ApiPublicStatusRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/painel': typeof AuthenticatedPainelRoute
   '/api/public/check': typeof ApiPublicCheckRoute
   '/api/public/status': typeof ApiPublicStatusRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/painel': typeof AuthenticatedPainelRoute
   '/api/public/check': typeof ApiPublicCheckRoute
   '/api/public/status': typeof ApiPublicStatusRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/public/check' | '/api/public/status'
+  fullPaths:
+    '/' | '/auth' | '/painel' | '/api/public/check' | '/api/public/status'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/public/check' | '/api/public/status'
-  id: '__root__' | '/' | '/api/public/check' | '/api/public/status'
+  to: '/' | '/auth' | '/painel' | '/api/public/check' | '/api/public/status'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/painel'
+    | '/api/public/check'
+    | '/api/public/status'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   ApiPublicCheckRoute: typeof ApiPublicCheckRoute
   ApiPublicStatusRoute: typeof ApiPublicStatusRoute
 }
@@ -67,6 +101,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/painel': {
+      id: '/_authenticated/painel'
+      path: '/painel'
+      fullPath: '/painel'
+      preLoaderRoute: typeof AuthenticatedPainelRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/api/public/check': {
       id: '/api/public/check'
@@ -85,8 +140,21 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedPainelRoute: typeof AuthenticatedPainelRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedPainelRoute: AuthenticatedPainelRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   ApiPublicCheckRoute: ApiPublicCheckRoute,
   ApiPublicStatusRoute: ApiPublicStatusRoute,
 }
