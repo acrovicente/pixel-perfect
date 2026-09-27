@@ -10,33 +10,132 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedAcessosRouteImport } from './routes/_authenticated/acessos'
+import { Route as AuthenticatedBotsRouteImport } from './routes/_authenticated/bots'
+import { Route as AuthenticatedPainelRouteImport } from './routes/_authenticated/painel'
+import { Route as AuthenticatedRedesRouteImport } from './routes/_authenticated/redes'
+import { Route as ApiPublicCheckRouteImport } from './routes/api/public/check'
+import { Route as ApiPublicStatusRouteImport } from './routes/api/public/status'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAcessosRoute = AuthenticatedAcessosRouteImport.update({
+  id: '/acessos',
+  path: '/acessos',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedBotsRoute = AuthenticatedBotsRouteImport.update({
+  id: '/bots',
+  path: '/bots',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPainelRoute = AuthenticatedPainelRouteImport.update({
+  id: '/painel',
+  path: '/painel',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedRedesRoute = AuthenticatedRedesRouteImport.update({
+  id: '/redes',
+  path: '/redes',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ApiPublicCheckRoute = ApiPublicCheckRouteImport.update({
+  id: '/api/public/check',
+  path: '/api/public/check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicStatusRoute = ApiPublicStatusRouteImport.update({
+  id: '/api/public/status',
+  path: '/api/public/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/acessos': typeof AuthenticatedAcessosRoute
+  '/bots': typeof AuthenticatedBotsRoute
+  '/painel': typeof AuthenticatedPainelRoute
+  '/redes': typeof AuthenticatedRedesRoute
+  '/api/public/check': typeof ApiPublicCheckRoute
+  '/api/public/status': typeof ApiPublicStatusRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/acessos': typeof AuthenticatedAcessosRoute
+  '/bots': typeof AuthenticatedBotsRoute
+  '/painel': typeof AuthenticatedPainelRoute
+  '/redes': typeof AuthenticatedRedesRoute
+  '/api/public/check': typeof ApiPublicCheckRoute
+  '/api/public/status': typeof ApiPublicStatusRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/acessos': typeof AuthenticatedAcessosRoute
+  '/_authenticated/bots': typeof AuthenticatedBotsRoute
+  '/_authenticated/painel': typeof AuthenticatedPainelRoute
+  '/_authenticated/redes': typeof AuthenticatedRedesRoute
+  '/api/public/check': typeof ApiPublicCheckRoute
+  '/api/public/status': typeof ApiPublicStatusRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/acessos'
+    | '/bots'
+    | '/painel'
+    | '/redes'
+    | '/api/public/check'
+    | '/api/public/status'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/acessos'
+    | '/bots'
+    | '/painel'
+    | '/redes'
+    | '/api/public/check'
+    | '/api/public/status'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/acessos'
+    | '/_authenticated/bots'
+    | '/_authenticated/painel'
+    | '/_authenticated/redes'
+    | '/api/public/check'
+    | '/api/public/status'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ApiPublicCheckRoute: typeof ApiPublicCheckRoute
+  ApiPublicStatusRoute: typeof ApiPublicStatusRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +147,88 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/acessos': {
+      id: '/_authenticated/acessos'
+      path: '/acessos'
+      fullPath: '/acessos'
+      preLoaderRoute: typeof AuthenticatedAcessosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/bots': {
+      id: '/_authenticated/bots'
+      path: '/bots'
+      fullPath: '/bots'
+      preLoaderRoute: typeof AuthenticatedBotsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/painel': {
+      id: '/_authenticated/painel'
+      path: '/painel'
+      fullPath: '/painel'
+      preLoaderRoute: typeof AuthenticatedPainelRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/redes': {
+      id: '/_authenticated/redes'
+      path: '/redes'
+      fullPath: '/redes'
+      preLoaderRoute: typeof AuthenticatedRedesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/public/check': {
+      id: '/api/public/check'
+      path: '/api/public/check'
+      fullPath: '/api/public/check'
+      preLoaderRoute: typeof ApiPublicCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/status': {
+      id: '/api/public/status'
+      path: '/api/public/status'
+      fullPath: '/api/public/status'
+      preLoaderRoute: typeof ApiPublicStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAcessosRoute: typeof AuthenticatedAcessosRoute
+  AuthenticatedBotsRoute: typeof AuthenticatedBotsRoute
+  AuthenticatedPainelRoute: typeof AuthenticatedPainelRoute
+  AuthenticatedRedesRoute: typeof AuthenticatedRedesRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAcessosRoute: AuthenticatedAcessosRoute,
+  AuthenticatedBotsRoute: AuthenticatedBotsRoute,
+  AuthenticatedPainelRoute: AuthenticatedPainelRoute,
+  AuthenticatedRedesRoute: AuthenticatedRedesRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ApiPublicCheckRoute: ApiPublicCheckRoute,
+  ApiPublicStatusRoute: ApiPublicStatusRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
