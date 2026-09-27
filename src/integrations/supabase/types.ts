@@ -14,7 +14,213 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      access_logs: {
+        Row: {
+          accept_language: string | null
+          asn: string | null
+          bot_signature: string | null
+          city: string | null
+          country: string | null
+          country_code: string | null
+          created_at: string
+          device_type: string
+          host: string | null
+          id: number
+          ip: string | null
+          is_bot: boolean
+          is_network_blocked: boolean
+          isp: string | null
+          latitude: number | null
+          longitude: number | null
+          method: string | null
+          network_signature: string | null
+          org: string | null
+          referer: string | null
+          region: string | null
+          request_uri: string | null
+          response_is: boolean
+          user_agent: string | null
+        }
+        Insert: {
+          accept_language?: string | null
+          asn?: string | null
+          bot_signature?: string | null
+          city?: string | null
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          device_type?: string
+          host?: string | null
+          id?: number
+          ip?: string | null
+          is_bot?: boolean
+          is_network_blocked?: boolean
+          isp?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          method?: string | null
+          network_signature?: string | null
+          org?: string | null
+          referer?: string | null
+          region?: string | null
+          request_uri?: string | null
+          response_is?: boolean
+          user_agent?: string | null
+        }
+        Update: {
+          accept_language?: string | null
+          asn?: string | null
+          bot_signature?: string | null
+          city?: string | null
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          device_type?: string
+          host?: string | null
+          id?: number
+          ip?: string | null
+          is_bot?: boolean
+          is_network_blocked?: boolean
+          isp?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          method?: string | null
+          network_signature?: string | null
+          org?: string | null
+          referer?: string | null
+          region?: string | null
+          request_uri?: string | null
+          response_is?: boolean
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      admin_logs: {
+        Row: {
+          action: string
+          admin_id: string | null
+          created_at: string
+          details: string | null
+          id: number
+          ip: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          action: string
+          admin_id?: string | null
+          created_at?: string
+          details?: string | null
+          id?: number
+          ip?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          action?: string
+          admin_id?: string | null
+          created_at?: string
+          details?: string | null
+          id?: number
+          ip?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      blocked_networks: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          id: string
+          signature: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          signature: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          signature?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      bot_signatures: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          id: string
+          signature: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          signature: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          signature?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ip_geo_cache: {
+        Row: {
+          asn: string | null
+          city: string | null
+          country: string | null
+          country_code: string | null
+          fetched_at: string
+          ip: string
+          isp: string | null
+          latitude: number | null
+          longitude: number | null
+          org: string | null
+          region: string | null
+        }
+        Insert: {
+          asn?: string | null
+          city?: string | null
+          country?: string | null
+          country_code?: string | null
+          fetched_at?: string
+          ip: string
+          isp?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          org?: string | null
+          region?: string | null
+        }
+        Update: {
+          asn?: string | null
+          city?: string | null
+          country?: string | null
+          country_code?: string | null
+          fetched_at?: string
+          ip?: string
+          isp?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          org?: string | null
+          region?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
