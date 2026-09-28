@@ -38,9 +38,38 @@ function AuthPage() {
     });
   }, [navigate]);
 
+  const [notice, setNotice] = useState<{ kind: "ok" | "error"; text: string } | null>(null);
+
+  function translate(error: unknown): string {
+    const e = error as { code?: string; message?: string };
+    if (e?.code === "email_not_confirmed")
+      return "Seu e-mail ainda não foi confirmado. Abra o link enviado para sua caixa de entrada (veja também o spam).";
+    if (e?.code === "invalid_credentials") return "E-mail ou senha incorretos.";
+    if (e?.code === "over_email_send_rate_limit")
+      return "Muitas tentativas. Aguarde um minuto antes de tentar de novo.";
+    if (e?.code === "user_already_exists")
+      return "Esta conta já existe. Use 'Já tenho conta' para entrar.";
+    return e?.message ?? "Não foi possível continuar.";
+  }
+
+  async function resend() {
+    setNotice(null);
+    const { error } = await supabase.auth.resend({
+      type: "signup",
+      email,
+      options: { emailRedirectTo: window.location.origin + "/painel" },
+    });
+    setNotice(
+      error
+        ? { kind: "error", text: translate(error) }
+        : { kind: "ok", text: "E-mail de confirmação reenviado. Verifique sua caixa de entrada." },
+    );
+  }
+
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     setLoading(true);
+    setNotice(null);
     try {
       if (mode === "signin") {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -54,10 +83,15 @@ function AuthPage() {
         });
         if (error) throw error;
         if (data.session) navigate({ to: "/painel", replace: true });
-        else toast.success("Conta criada. Confirme o e-mail para entrar.");
+        else
+          setNotice({
+            kind: "ok",
+            text: "Conta criada! Enviamos um link de confirmação para seu e-mail. Clique nele e depois entre aqui.",
+          });
       }
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Não foi possível continuar.");
+      setNotice({ kind: "error", text: translate(error) });
+      toast.error(translate(error));
     } finally {
       setLoading(false);
     }
@@ -93,8 +127,25 @@ function AuthPage() {
             autoComplete={mode === "signin" ? "current-password" : "new-password"}
           />
         </div>
+        {notice ? (
+          <div
+            role="status"
+            className={`rounded-md border p-3 text-sm ${
+              notice.kind === "ok"
+                ? "border-primary/40 bg-primary/10 text-foreground"
+                : "border-destructive/50 bg-destructive/10 text-destructive"
+            }`}
+          >
+            {notice.text}
+            {email ? (
+              <button type="button" onClick={resend} className="mt-2 block text-xs underline">
+                Reenviar e-mail de confirmação
+              </button>
+            ) : null}
+          </div>
+        ) : null}
         <Button type="submit" className="w-full" disabled={loading}>
-          {mode === "signin" ? "Entrar" : "Criar conta"}
+          {loading ? "Aguarde..." : mode === "signin" ? "Entrar" : "Criar conta"}
         </Button>
         <button
           type="button"
