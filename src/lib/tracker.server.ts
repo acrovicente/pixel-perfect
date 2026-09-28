@@ -156,7 +156,7 @@ async function lookupGeo(ip: string): Promise<Geo> {
       signal: AbortSignal.timeout(2500),
     });
     if (res.ok) {
-      const j = (await res.json()) as Record<string, any>;
+      const j = (await res.json()) as any;
       if (j.success !== false) {
         geo = {
           country: j.country ?? null,

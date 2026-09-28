@@ -27,7 +27,8 @@ export const Route = createFileRoute("/_authenticated/acessos")({
 
 const PAGE_SIZE = 25;
 
-type Log = Record<string, any>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Log = any;
 
 function fmt(value: string) {
   return new Date(value).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" });
